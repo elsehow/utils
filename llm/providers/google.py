@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING, Any, Dict
 from google import genai
 from google.genai import types
 
-from ...helpers.constants import GOOGLE_GEMINI_API_KEY_SECRET_NAME
-from ...keys.secrets import get_secret
+from helpers.constants import GOOGLE_GEMINI_API_KEY_SECRET_NAME
+from keys.secrets import get_secret
+
 from .base import BaseLLMProvider
 
 if TYPE_CHECKING:

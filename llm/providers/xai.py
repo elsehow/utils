@@ -6,8 +6,9 @@ from typing import TYPE_CHECKING, Any, Dict
 
 import openai
 
-from ...helpers.constants import XAI_API_KEY_SECRET_NAME
-from ...keys.secrets import get_secret
+from helpers.constants import XAI_API_KEY_SECRET_NAME
+from keys.secrets import get_secret
+
 from .base import BaseLLMProvider
 
 if TYPE_CHECKING:

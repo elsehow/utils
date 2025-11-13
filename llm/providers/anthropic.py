@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING, Any
 
 import anthropic
 
-from ...helpers.constants import ANTHROPIC_API_KEY_SECRET_NAME
-from ...keys.secrets import get_secret
+from helpers.constants import ANTHROPIC_API_KEY_SECRET_NAME
+from keys.secrets import get_secret
+
 from .base import BaseLLMProvider
 
 if TYPE_CHECKING:

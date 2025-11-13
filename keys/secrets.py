@@ -8,7 +8,7 @@ from typing import Optional
 from google.api_core import exceptions as gcloud_exceptions
 from google.cloud import secretmanager
 
-from ..helpers.constants import GOOGLE_CLOUD_PROJECT_ENV_VAR
+from helpers.constants import GOOGLE_CLOUD_PROJECT_ENV_VAR
 
 
 def get_project_id() -> str:
