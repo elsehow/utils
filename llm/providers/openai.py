@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, Dict
 from openai import OpenAI  # type: ignore[import]
 
 from helpers.constants import OPENAI_API_KEY_SECRET_NAME
-from keys.secrets import get_secret
+from gcp.secret_manager import get_secret
 
 from .base import BaseLLMProvider
 

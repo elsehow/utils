@@ -8,7 +8,7 @@ from google import genai
 from google.genai import types
 
 from helpers.constants import GOOGLE_GEMINI_API_KEY_SECRET_NAME
-from keys.secrets import get_secret
+from gcp.secret_manager import get_secret
 
 from .base import BaseLLMProvider
 

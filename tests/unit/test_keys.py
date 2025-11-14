@@ -11,13 +11,13 @@ from utils.helpers.constants import GOOGLE_CLOUD_PROJECT_ENV_VAR
 def _reload_secrets(monkeypatch):
     """Reload the secrets module with the desired environment."""
     monkeypatch.setenv(GOOGLE_CLOUD_PROJECT_ENV_VAR, "test-project")
-    secrets_module = import_module("utils.keys.secrets")
+    secrets_module = import_module("utils.gcp.secret_manager")
 
     reloaded_secrets = reload(secrets_module)
     return reloaded_secrets
 
 
-@patch("utils.keys.secrets.secretmanager.SecretManagerServiceClient")
+@patch("utils.gcp.secret_manager.secretmanager.SecretManagerServiceClient")
 def test_get_secret_returns_decoded_payload(mock_client_class, monkeypatch):
     """It returns the decoded payload when Secret Manager responds with bytes."""
     secrets_module = _reload_secrets(monkeypatch)
@@ -36,7 +36,7 @@ def test_get_secret_returns_decoded_payload(mock_client_class, monkeypatch):
     )
 
 
-@patch("utils.keys.secrets.secretmanager.SecretManagerServiceClient")
+@patch("utils.gcp.secret_manager.secretmanager.SecretManagerServiceClient")
 def test_get_secret_raises_type_error_for_non_bytes_payload(mock_client_class, monkeypatch):
     """It raises TypeError if Secret Manager returns a non-bytes payload."""
     secrets_module = _reload_secrets(monkeypatch)

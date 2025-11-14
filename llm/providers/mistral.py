@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Union
 from mistralai import Mistral, UserMessage  # type: ignore[import]
 
 from helpers.constants import MISTRAL_API_KEY_SECRET_NAME
-from keys.secrets import get_secret
+from gcp.secret_manager import get_secret
 
 from .base import BaseLLMProvider
 

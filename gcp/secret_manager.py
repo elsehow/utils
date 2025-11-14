@@ -37,3 +37,4 @@ def get_secret(secret_name: str, version_id: str = "latest") -> str:
     if not isinstance(payload_bytes, (bytes, bytearray)):
         raise TypeError("Secret payload data must be bytes.")
     return bytes(payload_bytes).decode("utf-8")
+

@@ -26,7 +26,7 @@ def test_get_secret_integration(monkeypatch):
     credentials_path = os.environ.get(GOOGLE_APPLICATION_CREDENTIALS_ENV_VAR)
     assert credentials_path is not None
 
-    secrets_module = import_module("utils.keys.secrets")
+    secrets_module = import_module("utils.gcp.secret_manager")
 
     value = secrets_module.get_secret(ANTHROPIC_API_KEY_SECRET_NAME)
     assert value is not None and value != ""
