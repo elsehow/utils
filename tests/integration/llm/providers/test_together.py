@@ -18,7 +18,15 @@ assert TOGETHER_MODEL is not None
 @pytest.mark.integration
 def test_together_provider_get_response_live_call():
     """It invokes the live Together AI API and returns text."""
-    provider = together_module.TogetherProvider()
+    from utils.llm.model_registry import configure_api_keys  # type: ignore[import]
+
+    from gcp.secret_manager import get_secret  # type: ignore[import]
+    from helpers.constants import TOGETHER_API_KEY_SECRET_NAME  # type: ignore[import]
+
+    # Configure API keys from GCP
+    configure_api_keys(from_gcp=True)
+    api_key = get_secret(TOGETHER_API_KEY_SECRET_NAME)
+    provider = together_module.TogetherProvider(api_key=api_key)
     assert_capital_of_france(
         lambda prompt: provider.get_response(
             TOGETHER_MODEL,

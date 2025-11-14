@@ -16,7 +16,15 @@ assert XAI_MODEL is not None
 @pytest.mark.integration
 def test_xai_provider_get_response_live_call():
     """It invokes the live xAI API and returns text."""
-    provider = xai_module.XAIProvider()
+    from utils.llm.model_registry import configure_api_keys  # type: ignore[import]
+
+    from gcp.secret_manager import get_secret  # type: ignore[import]
+    from helpers.constants import XAI_API_KEY_SECRET_NAME  # type: ignore[import]
+
+    # Configure API keys from GCP
+    configure_api_keys(from_gcp=True)
+    api_key = get_secret(XAI_API_KEY_SECRET_NAME)
+    provider = xai_module.XAIProvider(api_key=api_key)
     assert_capital_of_france(
         lambda prompt: provider.get_response(
             XAI_MODEL,

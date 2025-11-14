@@ -4,7 +4,6 @@ from importlib import import_module, reload
 from unittest.mock import MagicMock, patch
 
 import pytest
-from google.api_core import exceptions as gcloud_exceptions
 from utils.helpers.constants import GOOGLE_CLOUD_PROJECT_ENV_VAR
 
 

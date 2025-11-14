@@ -11,6 +11,20 @@ load_dotenv(
 )
 
 
+@pytest.fixture(scope="function", autouse=True)
+def configure_llm_api_keys():
+    """Auto-configure LLM API keys from GCP for integration tests."""
+    # Only configure if we're running integration tests
+    # This fixture will be skipped for non-integration tests
+    try:
+        from utils.llm.model_registry import configure_api_keys  # type: ignore[import]
+
+        configure_api_keys(from_gcp=True)
+    except Exception:
+        # If GCP is not configured, skip this fixture
+        pass
+
+
 def pytest_addoption(parser):
     """Register the custom --integration flag."""
     parser.addoption(

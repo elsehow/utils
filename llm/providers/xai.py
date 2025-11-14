@@ -6,9 +6,6 @@ from typing import TYPE_CHECKING, Any, Dict
 
 import openai
 
-from helpers.constants import XAI_API_KEY_SECRET_NAME
-from gcp.secret_manager import get_secret
-
 from .base import BaseLLMProvider
 
 if TYPE_CHECKING:
@@ -20,10 +17,22 @@ class XAIProvider(BaseLLMProvider):
 
     rate_limit_message = "xAI API request exceeded rate limit."
 
-    def __init__(self) -> None:
-        """Instantiate the xAI client using the configured API secret."""
-        super().__init__()
-        api_key = get_secret(XAI_API_KEY_SECRET_NAME)
+    def __init__(self, *, api_key: str | None = None, default_wait_time: int | None = None) -> None:
+        """Instantiate the xAI client using the provided API key.
+
+        Args:
+            api_key: xAI API key. If None, an error will be raised.
+            default_wait_time: Optional custom backoff interval.
+
+        Raises:
+            ValueError: If api_key is None.
+        """
+        super().__init__(default_wait_time=default_wait_time)
+        if api_key is None:
+            raise ValueError(
+                "API key required for XAIProvider. "
+                "Call configure_api_keys() or provide api_key parameter."
+            )
         self._xai_client = openai.OpenAI(
             api_key=api_key,
             base_url="https://api.x.ai/v1",
