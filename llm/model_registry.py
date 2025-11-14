@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from functools import lru_cache
 from typing import Any, Final, Type
 
-from gcp.secret_manager import get_secret
 from helpers.constants import (
     ANTHROPIC_API_KEY_SECRET_NAME,
     GOOGLE_GEMINI_API_KEY_SECRET_NAME,
@@ -15,6 +14,7 @@ from helpers.constants import (
     TOGETHER_API_KEY_SECRET_NAME,
     XAI_API_KEY_SECRET_NAME,
 )
+from gcp.secret_manager import get_secret
 
 from .lab_registry import LABS, Lab
 from .providers.anthropic import AnthropicProvider
@@ -70,7 +70,7 @@ class Model:
 
 def _get_api_key_for_provider(provider_cls: Type[BaseLLMProvider]) -> str | None:
     """Look up API key for a provider from the registry configuration.
-
+    
     Returns:
         API key string if configured, None otherwise.
     """
@@ -97,11 +97,11 @@ def configure_api_keys(
     mistral: str | None = None,
 ) -> None:
     """Configure API keys for LLM providers.
-
+    
     This function allows you to set API keys either explicitly or by loading them
     from GCP Secret Manager. Once configured, these keys will be used automatically
     when providers are instantiated through the model registry.
-
+    
     Args:
         from_gcp: If True, load all API keys from GCP Secret Manager. If False,
             only the explicitly provided keys will be configured.
@@ -111,14 +111,14 @@ def configure_api_keys(
         xai: xAI API key
         together: Together AI API key
         mistral: Mistral API key
-
+    
     Examples:
         # For non-GCP users:
         configure_api_keys(openai="sk-...", anthropic="sk-ant-...")
-
+        
         # For GCP users:
         configure_api_keys(from_gcp=True)
-
+        
         # Mixed: some explicit, some from GCP
         configure_api_keys(from_gcp=True, openai="custom-key")
     """
@@ -131,7 +131,7 @@ def configure_api_keys(
             except RuntimeError:
                 # GCP not configured or secret doesn't exist, skip this provider
                 pass
-
+    
     # Set explicitly provided keys (these override GCP keys if both are set)
     key_mapping = {
         "openai": (OpenAIProvider, openai),
@@ -141,33 +141,33 @@ def configure_api_keys(
         "together": (TogetherProvider, together),
         "mistral": (MistralProvider, mistral),
     }
-
+    
     for provider_cls, api_key in key_mapping.values():
         if api_key is not None:
             _PROVIDER_API_KEYS[provider_cls] = api_key
-
+    
     # Clear the provider instance cache since keys have changed
     _get_provider_instance.cache_clear()
 
 
 def validate_provider_keys(models: list[Model]) -> None:
     """Validate that all providers needed by the given models have API keys configured.
-
+    
     Args:
         models: List of Model objects to validate.
-
+    
     Raises:
         ValueError: If any model's provider lacks a configured API key.
     """
     missing_keys = []
     provider_names = {cls: name for name, cls in _PROVIDER_NAME_TO_CLASS.items()}
-
+    
     for model in models:
         provider_cls = model.provider_cls
         if provider_cls not in _PROVIDER_API_KEYS:
             provider_name = provider_names.get(provider_cls, provider_cls.__name__)
             missing_keys.append(f"{provider_name} (for model {model.id})")
-
+    
     if missing_keys:
         missing_list = ", ".join(missing_keys)
         raise ValueError(
@@ -183,13 +183,6 @@ MODELS: Final[list[Model]] = [
         token_limit=128_000,
         provider_cls=OpenAIProvider,
         lab=LABS["OpenAI"],
-    ),
-    Model(
-        id="Qwen2.5-Coder-32B-Instruct",
-        full_name="Qwen/Qwen2.5-Coder-32B-Instruct",
-        token_limit=262_144,
-        provider_cls=TogetherProvider,
-        lab=LABS["Qwen"],
     ),
     Model(
         id="gpt-5-2025-08-07",
@@ -236,6 +229,13 @@ MODELS: Final[list[Model]] = [
         token_limit=128_000,
         provider_cls=TogetherProvider,
         lab=LABS["DeepSeek"],
+    ),
+    Model(
+        id="Qwen2.5-Coder-32B-Instruct",
+        full_name="Qwen/Qwen2.5-Coder-32B-Instruct",
+        token_limit=262_144,
+        provider_cls=TogetherProvider,
+        lab=LABS["Qwen"],
     ),
     Model(
         id="Qwen3-235B-A22B-fp8-tput",

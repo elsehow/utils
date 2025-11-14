@@ -16,8 +16,9 @@ assert XAI_MODEL is not None
 @pytest.mark.integration
 def test_xai_provider_get_response_live_call():
     """It invokes the live xAI API and returns text."""
-    from utils.llm.model_registry import _get_api_key_for_provider  # type: ignore[import]
-
+    from utils.llm.model_registry import (
+        _get_api_key_for_provider,  # type: ignore[import]
+    )
     from utils.llm.providers.xai import XAIProvider  # type: ignore[import]
 
     # API keys are already configured by the session-scoped fixture

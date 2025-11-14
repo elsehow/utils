@@ -18,8 +18,9 @@ assert TOGETHER_MODEL is not None
 @pytest.mark.integration
 def test_together_provider_get_response_live_call():
     """It invokes the live Together AI API and returns text."""
-    from utils.llm.model_registry import _get_api_key_for_provider  # type: ignore[import]
-
+    from utils.llm.model_registry import (
+        _get_api_key_for_provider,  # type: ignore[import]
+    )
     from utils.llm.providers.together import TogetherProvider  # type: ignore[import]
 
     # API keys are already configured by the session-scoped fixture

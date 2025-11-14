@@ -18,8 +18,9 @@ assert OPENAI_MODEL is not None
 @pytest.mark.integration
 def test_openai_provider_get_response_live_call():
     """It invokes the live OpenAI API and returns text."""
-    from utils.llm.model_registry import _get_api_key_for_provider  # type: ignore[import]
-
+    from utils.llm.model_registry import (
+        _get_api_key_for_provider,  # type: ignore[import]
+    )
     from utils.llm.providers.openai import OpenAIProvider  # type: ignore[import]
 
     # API keys are already configured by the session-scoped fixture

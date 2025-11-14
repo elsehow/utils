@@ -14,7 +14,7 @@ load_dotenv(
 @pytest.fixture(scope="session", autouse=True)
 def configure_llm_api_keys(request):
     """Auto-configure LLM API keys from GCP for integration tests.
-    
+
     Uses session scope to cache API keys across all integration tests,
     avoiding redundant GCP Secret Manager calls.
     """
@@ -23,7 +23,9 @@ def configure_llm_api_keys(request):
     config = request.config
     if config.getoption("--integration"):
         try:
-            from utils.llm.model_registry import configure_api_keys  # type: ignore[import]
+            from utils.llm.model_registry import (
+                configure_api_keys,  # type: ignore[import]
+            )
 
             configure_api_keys(from_gcp=True)
         except Exception:

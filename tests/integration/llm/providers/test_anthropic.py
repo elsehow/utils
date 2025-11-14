@@ -18,8 +18,9 @@ assert ANTHROPIC_MODEL is not None
 @pytest.mark.integration
 def test_anthropic_provider_get_response_live_call():
     """It invokes the live Anthropic API and returns text."""
-    from utils.llm.model_registry import _get_api_key_for_provider  # type: ignore[import]
-
+    from utils.llm.model_registry import (
+        _get_api_key_for_provider,  # type: ignore[import]
+    )
     from utils.llm.providers.anthropic import AnthropicProvider  # type: ignore[import]
 
     # API keys are already configured by the session-scoped fixture
