@@ -1,8 +1,7 @@
 """Secret access helpers."""
 
-from .secrets import get_secret, get_secret_that_may_not_exist
+from .secrets import get_secret
 
 __all__ = [
     "get_secret",
-    "get_secret_that_may_not_exist",
 ]

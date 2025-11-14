@@ -49,17 +49,3 @@ def test_get_secret_raises_type_error_for_non_bytes_payload(mock_client_class, m
 
     with pytest.raises(TypeError):
         secrets_module.get_secret("api-key")
-
-
-@patch("utils.keys.secrets.secretmanager.SecretManagerServiceClient")
-def test_get_secret_that_may_not_exist_returns_none_when_missing(mock_client_class, monkeypatch):
-    """It returns None when the secret version is missing."""
-    secrets_module = _reload_secrets(monkeypatch)
-
-    mock_client = MagicMock()
-    mock_client.access_secret_version.side_effect = gcloud_exceptions.NotFound("missing")
-    mock_client_class.return_value = mock_client
-
-    result = secrets_module.get_secret_that_may_not_exist("missing-secret")
-
-    assert result is None
